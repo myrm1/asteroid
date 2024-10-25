@@ -8,6 +8,8 @@ from shot import Shot
 
 def main():
     pygame.init()
+    pygame.mixer.init()
+    asteroid_hit_sound = pygame.mixer.Sound('/home/myrm/workspace/github.com/myrm1/lidl_asteroid/sounds/destroying_asteroid.wav')
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
 
@@ -54,6 +56,7 @@ def main():
                         shot.kill()
                         asteroid.split()
                         score += 10
+                        asteroid_hit_sound.play()
 
             screen.fill("black")
 
