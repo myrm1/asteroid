@@ -1,4 +1,3 @@
-import sys
 import pygame
 from constants import *
 from player import Player
@@ -25,10 +24,11 @@ def main():
 
         Player.containers = (updatable, drawable)
         player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        score = 0
 
-        return updatable, drawable, asteroids, shots, player, asteroid_field
+        return updatable, drawable, asteroids, shots, player, asteroid_field, score
 
-    updatable, drawable, asteroids, shots, player, asteroid_field = init_game()
+    updatable, drawable, asteroids, shots, player, asteroid_field, score = init_game()
     game_over = False
     dt = 0
 
@@ -39,7 +39,7 @@ def main():
             if event.type == pygame.KEYDOWN and game_over:
                 if event.key == pygame.K_SPACE:
                     game_over = False
-                    updatable, drawable, asteroids, shots, player, asteroid_field = init_game()
+                    updatable, drawable, asteroids, shots, player, asteroid_field, score = init_game()
 
         if not game_over:
             for obj in updatable:
@@ -53,11 +53,17 @@ def main():
                     if asteroid.collides_with(shot):
                         shot.kill()
                         asteroid.split()
+                        score += 10
 
             screen.fill("black")
 
             for obj in drawable:
                 obj.draw(screen)
+
+            font_score = pygame.font.Font(None, 36)
+            score_text = font_score.render(f'Score: {score}', True, 'white')
+            score_rect = score_text.get_rect(topleft=(10, 10))
+            screen.blit(score_text, score_rect)
 
             if game_over:
                 font_big = pygame.font.Font(None, 74)
